@@ -1,0 +1,65 @@
+_schema-version: '3.1'
+ID: EMP_PO_SAP_CAP_UNMANAGED
+version: 1.0.0
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+modules:
+  - name: EMP_PO_SAP_CAP_UNMANAGED-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: EMP_PO_SAP_CAP_UNMANAGED-db
+      - name: EMP_PO_SAP_CAP_UNMANAGED-auth
+
+  - name: EMP_PO_SAP_CAP_UNMANAGED-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: EMP_PO_SAP_CAP_UNMANAGED-db
+
+  - name: EMP_PO_SAP_CAP_UNMANAGED
+    type: approuter.nodejs
+    path: app\router
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: EMP_PO_SAP_CAP_UNMANAGED-auth
+
+resources:
+  - name: EMP_PO_SAP_CAP_UNMANAGED-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: EMP_PO_SAP_CAP_UNMANAGED-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+  

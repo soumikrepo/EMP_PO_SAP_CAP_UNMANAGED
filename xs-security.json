@@ -1,0 +1,40 @@
+{
+  "xsappname": "EMP_PO_SAP_CAP_UNMANAGED-xs-app",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Admin",
+      "description": "All Operation"
+    },
+    {
+      "name": "$XSAPPNAME.USER",
+      "description": "Read Operation"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "Viewer",
+      "description": "View all books",
+      "scope-references": [
+        "$XSAPPNAME.USER",
+        "$XSAPPNAME.Admin"
+      ]
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "PurchaseOrder-role-collection",
+      "description": "PurchaseOrder-role-collection",
+      "role-template-references": [
+        "$XSAPPNAME.Viewer"
+      ]
+    }
+  ],
+  "oauth2-configuration": {
+    "token-validity": 3600,
+    "redirect-uris": [
+      "https://*/**"
+    ]
+  },
+  "attributes": []
+}
