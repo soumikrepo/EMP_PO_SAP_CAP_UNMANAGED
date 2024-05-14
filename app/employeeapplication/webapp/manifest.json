@@ -13,7 +13,7 @@
     "sourceTemplate": {
       "id": "@sap/generator-fiori:lrop",
       "version": "1.13.4",
-      "toolsId": "7fa405fc-95c4-4cad-8c6d-7077fb33a868"
+      "toolsId": "3268bc2d-337f-4dca-ae64-3a197799632e"
     },
     "dataSources": {
       "mainService": {
@@ -22,20 +22,6 @@
         "settings": {
           "annotations": [],
           "odataVersion": "4.0"
-        }
-      }
-    },
-    "crossNavigation": {
-      "inbounds": {
-        "EmployeePurchaseOrder-manage": {
-          "semanticObject": "EmployeePurchaseOrder",
-          "action": "manage",
-          "title": "{{flpTitle}}",
-          "subTitle": "{{flpSubtitle}}",
-          "signature": {
-            "parameters": {},
-            "additionalParameters": "allowed"
-          }
         }
       }
     }
@@ -97,7 +83,6 @@
       "css": []
     },
     "routing": {
-      "config": {},
       "routes": [
         {
           "pattern": ":?query:",
@@ -132,7 +117,8 @@
                     "type": "ResponsiveTable"
                   }
                 }
-              }
+              },
+              "initialLoad": "Enabled"
             }
           }
         },

@@ -3,6 +3,13 @@
   "authenticationMethod": "route",
   "routes": [
     {
+      "source": "^/EmployeeSRV/(.*)$",
+      "target": "/EmployeeSRV/$1",
+      "destination": "EMP_PO_SAP_CAP_UNMANAGED-srv-api",
+      "authenticationType": "xsuaa",
+      "csrfProtection": false
+    },
+    {
       "source": "^/resources/(.*)$",
       "target": "/resources/$1",
       "authenticationType": "none",
